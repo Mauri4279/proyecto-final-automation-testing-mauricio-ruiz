@@ -14,7 +14,7 @@ Este proyecto es una pre-entrega para el curso de QA Automation de Talento Tech 
 
 1. Clonar este repositorio:
    ```bash
-   git clone [URL_DE_TU_REPOSITORIO]
+   git clone https://github.com/Mauri4279/pre-entrega-automation-testing--mauricio-ruiz-.git
    ```
 
 2. Crear un entorno virtual:
