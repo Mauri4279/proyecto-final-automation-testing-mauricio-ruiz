@@ -29,3 +29,35 @@ def test_login_exitoso(driver: WebDriver):
     # Validamos que el título "Products" sea visible
     title_element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "title")))
     assert title_element.text == "Products", f"Error: Se esperaba 'Products', pero se encontró '{title_element.text}'"
+
+def test_verificar_catalogo(driver):
+    """Verifica el título de la página, presencia de productos y elementos de UI."""
+    
+    # 1. Login rápido (Precondición para acceder al catálogo)
+    driver.get("https://www.saucedemo.com/")
+    wait = WebDriverWait(driver, 10)
+    
+    wait.until(EC.presence_of_element_located((By.ID, "user-name"))).send_keys("standard_user")
+    driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    driver.find_element(By.ID, "login-button").click()
+
+    # 2. Verificar que el título de la página sea correcto
+    title_element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "title")))
+    assert title_element.text == "Products", "Error: El título no es 'Products'"
+
+    # 3. Comprobar que existan productos visibles (al menos uno)
+    # Usamos presence_of_all_elements_located para obtener una lista (array) de elementos
+    productos = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "inventory_item")))
+    assert len(productos) > 0, "Error: No se encontraron productos en el catálogo"
+
+    # 4. Listar nombre y precio del primer producto
+    primer_nombre = productos[0].find_element(By.CLASS_NAME, "inventory_item_name").text
+    primer_precio = productos[0].find_element(By.CLASS_NAME, "inventory_item_price").text
+    print(f"\n--- Info del primer producto: {primer_nombre} | Precio: {primer_precio} ---")
+
+    # 5. Validar que elementos importantes de la interfaz estén presentes
+    menu_btn = driver.find_element(By.ID, "react-burger-menu-btn")
+    assert menu_btn.is_displayed(), "Error: El botón de menú no es visible"
+    
+    filtro_dropdown = driver.find_element(By.CLASS_NAME, "product_sort_container")
+    assert filtro_dropdown.is_displayed(), "Error: El filtro de productos no es visible"
