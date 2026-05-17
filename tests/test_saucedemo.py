@@ -61,3 +61,32 @@ def test_verificar_catalogo(driver):
     
     filtro_dropdown = driver.find_element(By.CLASS_NAME, "product_sort_container")
     assert filtro_dropdown.is_displayed(), "Error: El filtro de productos no es visible"
+
+def test_interaccion_con_carrito(driver):
+    """Verifica que se pueda añadir un producto al carrito y aparezca allí."""
+    
+    # 1. Login rápido (Precondición)
+    driver.get("https://www.saucedemo.com/")
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.presence_of_element_located((By.ID, "user-name"))).send_keys("standard_user")
+    driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    driver.find_element(By.ID, "login-button").click()
+
+    # 2. Añadir el primer producto al carrito
+    # Buscamos todos los botones que tengan el texto "Add to cart" usando XPATH
+    botones_add = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//button[text()='Add to cart']")))
+    botones_add[0].click()
+
+    # 3. Verificar que el contador del carrito se incremente correctamente
+    badge_carrito = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "shopping_cart_badge")))
+    assert badge_carrito.text == "1", "Error: El contador del carrito no muestra 1"
+
+    # 4. Navegar al carrito de compras
+    driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
+
+    # 5. Comprobar que el producto añadido aparezca correctamente en el carrito
+    wait.until(EC.url_contains("/cart.html"))
+    items_en_carrito = driver.find_elements(By.CLASS_NAME, "cart_item")
+    
+    # Validamos que haya exactamente 1 elemento en la lista del carrito
+    assert len(items_en_carrito) == 1, "Error: El producto no aparece en el carrito"
