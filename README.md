@@ -48,7 +48,7 @@ El proyecto sigue una organización modular basada en POM:
 Para ejecutar todas las pruebas (UI y API) y generar el reporte HTML con logs y capturas, utiliza el siguiente comando:
 
 ```bash
-pytest -v 
+python -m pytest tests/test_saucedemo.py -v --html=reports/reporte.html
 
 ### ¿Cómo interpretar los reportes generados?
 El reporte HTML generado en `reports/reporte.html` proporciona una visión detallada de la ejecución. Mostrará cada test ejecutado, su duración y su estado:
