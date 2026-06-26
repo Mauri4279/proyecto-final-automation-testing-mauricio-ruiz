@@ -80,3 +80,14 @@ def test_flujo_checkout_completo(driver):
     # 4. Validación Final
     mensaje_final = checkout_page.get_success_message()
     assert mensaje_final == "Thank you for your order!", "El flujo de compra no finalizó correctamente"
+
+def test_forzar_error_captura(driver):
+    """Test diseñado específicamente para fallar y probar el sistema de capturas."""
+    from pages.login_page import LoginPage
+    
+    # 1. Navegamos a la página
+    login_page = LoginPage(driver)
+    login_page.navigate()
+    
+    # 2. Forzamos el fallo: Afirmamos que el título es "Facebook" (cuando en realidad es "Swag Labs")
+    assert driver.title == "Facebook", "🚨 Este error es 100% intencional para generar el screenshot 🚨"
