@@ -10,8 +10,8 @@ def get_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     
-    # max_window no hace nada en headless, pero sirve si lo corres en local
-    chrome_options.add_argument("--start-maximized") 
+# Definir explícitamente el tamaño de la ventana
+    chrome_options.add_argument("--window-size=1920,1080")
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     return driver
