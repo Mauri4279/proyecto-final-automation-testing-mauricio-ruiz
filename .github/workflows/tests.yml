@@ -1,0 +1,37 @@
+name: Ejecutar Pruebas Automatizadas UI y API
+
+# Esto le dice a GitHub que corra este script cada vez que hagas un "push" a la rama main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    # Construimos un entorno Linux (Ubuntu) virtual en la nube de GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Clonar el repositorio
+      uses: actions/checkout@v3
+
+    - name: 2. Configurar Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: 3. Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 4. Ejecutar pruebas con Pytest
+      run: |
+        pytest -v --html=reports/reporte.html --self-contained-html
+      # Esto permite que el flujo continúe y guarde el reporte aunque alguna prueba falle
+      continue-on-error: true 
+
+    - name: 5. Guardar Reporte HTML como Artefacto
+      uses: actions/upload-artifact@v3
+      with:
+        name: reporte-pruebas-automatizadas
+        path: reports/
