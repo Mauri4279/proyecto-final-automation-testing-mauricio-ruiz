@@ -16,10 +16,15 @@ class CheckoutPage(BasePage):
         self.click(self.CHECKOUT_BUTTON)
 
     def fill_personal_info(self, nombre, apellido, codigo_postal):
-        self.type_text(self.FIRST_NAME, nombre)
-        self.type_text(self.LAST_NAME, apellido)
-        self.type_text(self.POSTAL_CODE, codigo_postal)
-        self.click(self.CONTINUE_BUTTON)
+            # 1. Esperamos a que la página de Checkout realmente se haya cargado
+            from selenium.webdriver.support import expected_conditions as EC
+            self.wait.until(EC.url_contains("checkout-step-one.html"))
+            
+            # 2. Ahora sí, escribimos los datos
+            self.type_text(self.FIRST_NAME, nombre)
+            self.type_text(self.LAST_NAME, apellido)
+            self.type_text(self.POSTAL_CODE, codigo_postal)
+            self.click(self.CONTINUE_BUTTON)
 
     def finish_checkout(self):
         self.click(self.FINISH_BUTTON)
