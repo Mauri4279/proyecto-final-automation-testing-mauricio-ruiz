@@ -49,7 +49,6 @@ Para ejecutar todas las pruebas (UI y API) y generar el reporte HTML con logs y 
 
 ```bash
 python -m pytest tests/test_ui/test_saucedemo.py -v --html=reports/reporte.html
-python -m pytest tests/test_api/test_reqres_api.py -v -s --html=reports/reporte_api.html
 ```
 
 
